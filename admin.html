@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="public/vite.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - PurePlates</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-container {
+        background: white;
+        padding: 50px 40px;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        width: 100%;
+      }
+
+      .login-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .login-header h1 {
+        color: #2d5016;
+        font-size: 2.2em;
+        margin-bottom: 10px;
+      }
+
+      .login-header p {
+        color: #666;
+        font-size: 1.05em;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+        font-size: 1em;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1em;
+        transition: border-color 0.3s;
+        font-family: inherit;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #2d5016;
+        box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+      }
+
+      .login-button {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #2d5016 0%, #6b8e23 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.05em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;
+      }
+
+      .login-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(45, 80, 22, 0.3);
+      }
+
+      .login-button:active {
+        transform: translateY(0);
+      }
+
+      .error-message {
+        background: #fee;
+        color: #c33;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: none;
+        border-left: 4px solid #c33;
+      }
+
+      .success-message {
+        background: #efe;
+        color: #3c3;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        display: none;
+        border-left: 4px solid #3c3;
+      }
+
+      .back-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .back-link a {
+        color: #2d5016;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+      }
+
+      .back-link a:hover {
+        color: #6b8e23;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <div class="login-header">
+        <h1>PurePlates</h1>
+        <p>Admin Dashboard</p>
+      </div>
+
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input 
+            type="text" 
+            id="username" 
+            placeholder="Enter admin username" 
+            required 
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            placeholder="Enter admin password" 
+            required 
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="login-button">Login to Admin Panel</button>
+      </form>
+
+      <div class="back-link">
+        <a href="index.html">← Back to Home</a>
+      </div>
+    </div>
+
+    <script>
+      function handleLogin(event) {
+        event.preventDefault();
+        
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const errorMsg = document.getElementById('errorMessage');
+        const successMsg = document.getElementById('successMessage');
+
+        // Clear previous messages
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
+
+        // Send login request to backend
+        fetch('/api/admin/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Store auth token in sessionStorage (cleared when browser closes)
+            sessionStorage.setItem('admin_token', data.token);
+            successMsg.textContent = 'Login successful! Redirecting...';
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+              window.location.href = 'admin-dashboard.html';
+            }, 1500);
+          } else {
+            errorMsg.textContent = data.error || 'Login failed. Invalid credentials.';
+            errorMsg.style.display = 'block';
+            document.getElementById('password').value = '';
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          errorMsg.textContent = 'Error connecting to server. Please try again.';
+          errorMsg.style.display = 'block';
+        });
+      }
+
+      // Check if already logged in
+      if (sessionStorage.getItem('admin_token')) {
+        window.location.href = 'admin-dashboard.html';
+      }
+    </script>
+  </body>
+</html>
