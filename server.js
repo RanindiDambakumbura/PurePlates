@@ -7,6 +7,7 @@ const app = express();
 const PORT = 3000;
 
 // Middleware
+app.use(express.static('.')); // Serve static files from root directory
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -14,15 +15,28 @@ app.use(cors());
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '', // Replace with your MySQL password
-  database: 'resturent_db'
+  password: '', // Leave empty if no password, or enter your MySQL password
+  database: 'resturent_db',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 db.connect((err) => {
   if (err) {
-    console.error('Database connection failed:', err);
+    console.error('⚠️ Database connection failed:', err.message);
+    console.log('Attempting to reconnect in 5 seconds...');
+    setTimeout(() => {
+      db.connect((retryErr) => {
+        if (retryErr) {
+          console.error('❌ Reconnection failed:', retryErr.message);
+        } else {
+          console.log('✅ Database reconnected successfully');
+        }
+      });
+    }, 5000);
   } else {
-    console.log('Connected to the database');
+    console.log('✅ Connected to the database');
   }
 });
 
@@ -66,15 +80,22 @@ app.get('/api/orders', (req, res) => {
 
 // Create a new order
 app.post('/api/orders', (req, res) => {
-  const { customer_name, customer_email, customer_phone, items, total_price } = req.body;
-  const query = 'INSERT INTO orders (customer_name, customer_email, customer_phone, items, total_price) VALUES (?, ?, ?, ?, ?)';
-  const values = [customer_name, customer_email, customer_phone, JSON.stringify(items), total_price];
+  const { customer_name, customer_email, customer_phone, street_address, city, zip_code, special_instructions, items, total_price, payment_method } = req.body;
+  
+  // Validate required fields
+  if (!customer_name || !customer_email || !customer_phone || !street_address || !city || !zip_code || !items || !total_price || !payment_method) {
+    return res.status(400).json({ success: false, error: 'Missing required fields' });
+  }
+
+  const query = 'INSERT INTO orders (customer_name, customer_email, customer_phone, street_address, city, zip_code, special_instructions, items, total_price, payment_method, order_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  const values = [customer_name, customer_email, customer_phone, street_address, city, zip_code, special_instructions || '', JSON.stringify(items), total_price, payment_method, 'Pending'];
 
   db.query(query, values, (err, results) => {
     if (err) {
-      res.status(500).send(err);
+      console.error('Database error:', err);
+      res.status(500).json({ success: false, error: err.message });
     } else {
-      res.status(201).json({ id: results.insertId, ...req.body });
+      res.status(201).json({ success: true, order_id: results.insertId });
     }
   });
 });

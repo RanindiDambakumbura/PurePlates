@@ -422,8 +422,8 @@
           payment_method: method
         };
 
-        // Send order to PHP backend
-        fetch('backend/place_order.php', {
+        // Send order to backend
+        fetch('/api/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
