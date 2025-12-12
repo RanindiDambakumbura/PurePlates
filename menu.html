@@ -404,24 +404,67 @@
         };
 
         showPaymentProcessingPopup(formattedTotal, paymentMethods[method]);
+
+        // Get delivery details from localStorage
+        const deliveryDetails = JSON.parse(localStorage.getItem('delivery_details'));
         
-        // Store cart and payment info in localStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
-        localStorage.setItem('payment_method', method);
-        localStorage.setItem('total_amount', total);
-        
-        // Clear the cart
-        cart = [];
-        updateCart();
-        
-        // Close the payment popup
-        closePaymentPopup();
-        
-        // Show success popup window
-        showSuccessPopup(formattedTotal, paymentMethods[method]);
+        // Prepare order data
+        const orderData = {
+          customer_name: deliveryDetails.name,
+          customer_email: deliveryDetails.email,
+          customer_phone: deliveryDetails.phone,
+          street_address: deliveryDetails.address,
+          city: deliveryDetails.city,
+          zip_code: deliveryDetails.zip,
+          special_instructions: deliveryDetails.instructions,
+          items: cart,
+          total_price: total,
+          payment_method: method
+        };
+
+        // Send order to PHP backend
+        fetch('backend/place_order.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderData)
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('HTTP Error: ' + response.status);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Close payment processing popup
+          closePaymentProcessingPopup();
+          
+          if (data.success) {
+            // Clear the cart and localStorage
+            cart = [];
+            updateCart();
+            localStorage.removeItem('delivery_details');
+            localStorage.removeItem('cart');
+            
+            // Close the payment popup
+            closePaymentPopup();
+            
+            // Show success popup window
+            showSuccessPopup(formattedTotal, paymentMethods[method], data.order_id);
+          } else {
+            showErrorPopup('Failed to place order: ' + (data.error || 'Unknown error'));
+          }
+        })
+        .catch(error => {
+          // Close payment processing popup
+          closePaymentProcessingPopup();
+          console.error('Error:', error);
+          showErrorPopup('Error placing order: ' + error.message);
+        });
       }
 
-      function showSuccessPopup(total, paymentMethod) {
+      function showSuccessPopup(total, paymentMethod, orderId) {
         const successHTML = `
           <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 9999;" id="successOverlay">
             <div style="background: white; padding: 50px 40px; border-radius: 16px; max-width: 450px; box-shadow: 0 12px 48px rgba(0,0,0,0.25); text-align: center;">
@@ -431,6 +474,9 @@
                 Thank you for your purchase.
               </p>
               <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #6b8e23;">
+                <p style="margin: 8px 0; color: #333; font-size: 1em;">
+                  <strong>Order ID:</strong> #${orderId}
+                </p>
                 <p style="margin: 8px 0; color: #333; font-size: 1em;">
                   <strong>Total Amount:</strong> Rs. ${total}
                 </p>
