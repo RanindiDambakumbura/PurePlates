@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="public/vite.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Menu - PurePlates</title>
     <link rel="stylesheet" href="/style.css" />
@@ -33,23 +33,26 @@
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Garden Fresh Salad</h3>
-                <span class="price">$12</span>
+                <span class="price">Rs. 1200</span>
               </div>
               <p>Mixed greens, cherry tomatoes, cucumber, and balsamic vinaigrette</p>
+              <button class="btn-secondary" onclick="addToCart('Garden Fresh Salad', 1200)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Quinoa Bowl</h3>
-                <span class="price">$14</span>
+                <span class="price">Rs. 1400</span>
               </div>
               <p>Organic quinoa with roasted vegetables and tahini dressing</p>
+              <button class="btn-secondary" onclick="addToCart('Quinoa Bowl', 1400)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Avocado Toast</h3>
-                <span class="price">$11</span>
+                <span class="price">Rs. 1100</span>
               </div>
               <p>Smashed avocado on artisan bread with cherry tomatoes</p>
+              <button class="btn-secondary" onclick="addToCart('Avocado Toast', 1100)">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -60,30 +63,34 @@
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Grilled Salmon</h3>
-                <span class="price">$28</span>
+                <span class="price">Rs. 2800</span>
               </div>
               <p>Wild-caught salmon with seasonal vegetables and lemon butter</p>
+              <button class="btn-secondary" onclick="addToCart('Grilled Salmon', 2800)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Herb Chicken</h3>
-                <span class="price">$24</span>
+                <span class="price">Rs. 2400</span>
               </div>
               <p>Free-range chicken breast with herb sauce and roasted potatoes</p>
+              <button class="btn-secondary" onclick="addToCart('Herb Chicken', 2400)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Vegetable Pasta</h3>
-                <span class="price">$22</span>
+                <span class="price">Rs. 2200</span>
               </div>
               <p>Fresh pasta with seasonal vegetables and pesto sauce</p>
+              <button class="btn-secondary" onclick="addToCart('Vegetable Pasta', 2200)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Grass-Fed Steak</h3>
-                <span class="price">$32</span>
+                <span class="price">Rs. 3200</span>
               </div>
               <p>Premium cut with garlic butter and seasonal greens</p>
+              <button class="btn-secondary" onclick="addToCart('Grass-Fed Steak', 3200)">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -94,23 +101,26 @@
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Fresh Fruit Platter</h3>
-                <span class="price">$10</span>
+                <span class="price">Rs. 1000</span>
               </div>
               <p>Seasonal fruits with honey yogurt dip</p>
+              <button class="btn-secondary" onclick="addToCart('Fresh Fruit Platter', 1000)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Dark Chocolate Mousse</h3>
-                <span class="price">$12</span>
+                <span class="price">Rs. 1200</span>
               </div>
               <p>Rich dark chocolate mousse with fresh berries</p>
+              <button class="btn-secondary" onclick="addToCart('Dark Chocolate Mousse', 1200)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Lemon Tart</h3>
-                <span class="price">$11</span>
+                <span class="price">Rs. 1100</span>
               </div>
               <p>Homemade lemon tart with meringue topping</p>
+              <button class="btn-secondary" onclick="addToCart('Lemon Tart', 1100)">Add to Cart</button>
             </div>
           </div>
         </div>
@@ -121,25 +131,43 @@
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Fresh Juices</h3>
-                <span class="price">$6</span>
+                <span class="price">Rs. 600</span>
               </div>
               <p>Orange, apple, carrot, or green detox blend</p>
+              <button class="btn-secondary" onclick="addToCart('Fresh Juices', 600)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Organic Coffee</h3>
-                <span class="price">$5</span>
+                <span class="price">Rs. 500</span>
               </div>
               <p>Espresso, cappuccino, or latte</p>
+              <button class="btn-secondary" onclick="addToCart('Organic Coffee', 500)">Add to Cart</button>
             </div>
             <div class="menu-item">
               <div class="menu-item-header">
                 <h3>Herbal Tea</h3>
-                <span class="price">$4</span>
+                <span class="price">Rs. 400</span>
               </div>
               <p>Selection of premium loose leaf teas</p>
+              <button class="btn-secondary" onclick="addToCart('Herbal Tea', 400)">Add to Cart</button>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cart-section">
+      <div class="container">
+        <h2>Your Shopping Cart</h2>
+        <div id="cartItems" class="cart-items">
+          <p>Your cart is empty. Start adding dishes!</p>
+        </div>
+        <div id="cartSummary" class="cart-summary" style="display: none;">
+          <h3>Order Summary</h3>
+          <p>Total: Rs. <span id="cartTotal">0.00</span></p>
+          <button class="btn-primary" onclick="proceedToCheckout()">Proceed to Checkout</button>
+          <button class="btn-secondary" onclick="clearCart()">Clear Cart</button>
         </div>
       </div>
     </section>
@@ -172,6 +200,394 @@
         </div>
       </div>
     </footer>
+    <script>
+      let cart = [];
+
+      function addToCart(itemName, itemPrice) {
+        const existingItem = cart.find(item => item.name === itemName);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ name: itemName, price: itemPrice, quantity: 1 });
+        }
+        updateCart();
+        showAddToCartPopup(itemName);
+      }
+
+      function updateCart() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        const cartSummary = document.getElementById('cartSummary');
+        const cartTotal = document.getElementById('cartTotal');
+
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = '<p>Your cart is empty. Start adding dishes!</p>';
+          cartSummary.style.display = 'none';
+          return;
+        }
+
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+          total += item.price * item.quantity;
+          const cartItem = document.createElement('div');
+          cartItem.classList.add('cart-item');
+          const itemTotal = (item.price * item.quantity).toFixed(2);
+          const formattedPrice = item.price.toLocaleString('en-IN');
+          const formattedTotal = parseFloat(itemTotal).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+          cartItem.innerHTML = `
+            <p><strong>${item.name}</strong> <br/> Rs. ${formattedPrice} × ${item.quantity} = <strong>Rs. ${formattedTotal}</strong></p>
+            <button class="btn-small" onclick="removeFromCart(${index})">Remove</button>
+          `;
+          cartItemsContainer.appendChild(cartItem);
+        });
+
+        cartTotal.textContent = total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        cartSummary.style.display = 'block';
+      }
+
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+      }
+
+      function clearCart() {
+        cart = [];
+        updateCart();
+      }
+
+      function proceedToCheckout() {
+        if (cart.length === 0) {
+          showEmptyCartPopup();
+          return;
+        }
+
+        showDeliveryDetailsForm();
+      }
+
+      function showDeliveryDetailsForm() {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const formattedTotal = total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+        const deliveryHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 9999; overflow-y: auto; padding: 20px 0;" id="deliveryOverlay">
+            <div style="background: white; padding: 40px; border-radius: 12px; max-width: 450px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); margin: auto;">
+              <h2 style="color: #2d5016; margin-bottom: 25px; text-align: center; font-size: 1.6em;">Delivery Details</h2>
+              
+              <form id="deliveryForm" style="display: flex; flex-direction: column; gap: 15px;">
+                <div>
+                  <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Full Name *</label>
+                  <input type="text" id="deliveryName" required placeholder="John Doe" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box; transition: border-color 0.3s;">
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Phone Number *</label>
+                  <input type="tel" id="deliveryPhone" required placeholder="9876543210" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box;">
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Email Address *</label>
+                  <input type="email" id="deliveryEmail" required placeholder="john@example.com" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box;">
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Street Address *</label>
+                  <input type="text" id="deliveryAddress" required placeholder="123 Main Street" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                  <div>
+                    <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">City *</label>
+                    <input type="text" id="deliveryCity" required placeholder="Colombo" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box;">
+                  </div>
+                  <div>
+                    <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">ZIP Code *</label>
+                    <input type="text" id="deliveryZip" required placeholder="12345" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box;">
+                  </div>
+                </div>
+
+                <div>
+                  <label style="display: block; margin-bottom: 5px; color: #333; font-weight: 600;">Special Instructions (Optional)</label>
+                  <textarea id="deliveryInstructions" placeholder="Leave at gate, ring doorbell twice, etc." rows="3" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; box-sizing: border-box; resize: none; font-family: inherit;"></textarea>
+                </div>
+
+                <div style="background: #f0f8ff; padding: 12px; border-radius: 6px; border-left: 4px solid #6b8e23; margin: 10px 0;">
+                  <p style="margin: 0; color: #333; font-size: 0.95em;">
+                    <strong>Total: Rs. ${formattedTotal}</strong>
+                  </p>
+                </div>
+
+                <button type="button" onclick="submitDeliveryDetails()" style="width: 100%; padding: 14px; background-color: #2d5016; color: white; border: none; border-radius: 8px; font-size: 1.05em; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                  Continue to Payment
+                </button>
+
+                <button type="button" onclick="closeDeliveryForm()" style="width: 100%; padding: 12px; background-color: #ccc; color: #333; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer;">
+                  Cancel
+                </button>
+              </form>
+            </div>
+          </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', deliveryHTML);
+      }
+
+      function submitDeliveryDetails() {
+        const name = document.getElementById('deliveryName').value;
+        const phone = document.getElementById('deliveryPhone').value;
+        const email = document.getElementById('deliveryEmail').value;
+        const address = document.getElementById('deliveryAddress').value;
+        const city = document.getElementById('deliveryCity').value;
+        const zip = document.getElementById('deliveryZip').value;
+        const instructions = document.getElementById('deliveryInstructions').value;
+
+        // Validate all required fields
+        if (!name || !phone || !email || !address || !city || !zip) {
+          showErrorPopup('Please fill in all required fields');
+          return;
+        }
+
+        // Store delivery details
+        const deliveryDetails = { name, phone, email, address, city, zip, instructions };
+        localStorage.setItem('delivery_details', JSON.stringify(deliveryDetails));
+
+        // Close delivery form and show payment options
+        closeDeliveryForm();
+        showPaymentOptionsPopup();
+      }
+
+      function closeDeliveryForm() {
+        const overlay = document.getElementById('deliveryOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+
+      function showPaymentOptionsPopup() {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const formattedTotal = total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+        const paymentHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 9999;" id="paymentOverlay">
+            <div style="background: white; padding: 40px; border-radius: 12px; max-width: 400px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);">
+              <h2 style="color: #2d5016; margin-bottom: 20px; text-align: center;">Payment Options</h2>
+              <p style="font-size: 1.1em; text-align: center; margin-bottom: 30px; color: #555;">
+                <strong>Total Amount: Rs. ${formattedTotal}</strong>
+              </p>
+              
+              <button onclick="selectPayment('credit_card')" style="width: 100%; padding: 15px; margin-bottom: 12px; background-color: #6b8e23; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                💳 Credit/Debit Card
+              </button>
+              
+              <button onclick="selectPayment('cod')" style="width: 100%; padding: 15px; margin-bottom: 20px; background-color: #6b8e23; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                💵 Cash on Delivery
+              </button>
+              
+              <button onclick="closePaymentPopup()" style="width: 100%; padding: 12px; background-color: #ccc; color: #333; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer;">
+                Cancel
+              </button>
+            </div>
+          </div>
+        `;
+
+        document.body.insertAdjacentHTML('beforeend', paymentHTML);
+      }
+
+      function selectPayment(method) {
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const formattedTotal = total.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        const paymentMethods = {
+          'credit_card': 'Credit/Debit Card',
+          'cod': 'Cash on Delivery',
+          'wallet': 'Digital Wallet'
+        };
+
+        showPaymentProcessingPopup(formattedTotal, paymentMethods[method]);
+        
+        // Store cart and payment info in localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('payment_method', method);
+        localStorage.setItem('total_amount', total);
+        
+        // Clear the cart
+        cart = [];
+        updateCart();
+        
+        // Close the payment popup
+        closePaymentPopup();
+        
+        // Show success popup window
+        showSuccessPopup(formattedTotal, paymentMethods[method]);
+      }
+
+      function showSuccessPopup(total, paymentMethod) {
+        const successHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 9999;" id="successOverlay">
+            <div style="background: white; padding: 50px 40px; border-radius: 16px; max-width: 450px; box-shadow: 0 12px 48px rgba(0,0,0,0.25); text-align: center;">
+              <div style="font-size: 4em; margin-bottom: 20px;">✅</div>
+              <h2 style="color: #2d5016; margin-bottom: 15px; font-size: 1.8em;">Order Placed Successfully!</h2>
+              <p style="font-size: 1.1em; color: #555; margin-bottom: 15px; line-height: 1.6;">
+                Thank you for your purchase.
+              </p>
+              <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid #6b8e23;">
+                <p style="margin: 8px 0; color: #333; font-size: 1em;">
+                  <strong>Total Amount:</strong> Rs. ${total}
+                </p>
+                <p style="margin: 8px 0; color: #333; font-size: 1em;">
+                  <strong>Payment Method:</strong> ${paymentMethod}
+                </p>
+              </div>
+              <p style="font-size: 0.95em; color: #777; margin-bottom: 25px;">
+                Your order has been confirmed. A confirmation email will be sent shortly.
+              </p>
+              <button onclick="closeSuccessPopup()" style="width: 100%; padding: 16px; background-color: #2d5016; color: white; border: none; border-radius: 8px; font-size: 1.05em; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                Close
+              </button>
+            </div>
+          </div>
+        `;
+
+        // Add success popup to page
+        document.body.insertAdjacentHTML('beforeend', successHTML);
+      }
+
+      function closeSuccessPopup() {
+        const overlay = document.getElementById('successOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+
+      function closePaymentPopup() {
+        const overlay = document.getElementById('paymentOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+
+      function showErrorPopup(message) {
+        const errorHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 9999;" id="errorOverlay" onclick="closeErrorPopup()">
+            <div style="background: white; padding: 40px; border-radius: 12px; max-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center;" onclick="event.stopPropagation();">
+              <div style="font-size: 3em; margin-bottom: 15px;">⚠️</div>
+              <h3 style="color: #ff6b35; margin-bottom: 10px; font-size: 1.3em;">Error</h3>
+              <p style="color: #555; margin-bottom: 20px; font-size: 1.05em;">
+                ${message}
+              </p>
+              <button onclick="closeErrorPopup()" style="width: 100%; padding: 12px; background-color: #ff6b35; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer;">
+                OK
+              </button>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', errorHTML);
+      }
+
+      function closeErrorPopup() {
+        const overlay = document.getElementById('errorOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+
+      function showAddToCartPopup(itemName) {
+        const popupHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 8999;" id="addToCartOverlay" onclick="closeAddToCartPopup()">
+            <div style="background: white; padding: 30px 40px; border-radius: 12px; max-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center; animation: slideIn 0.3s ease;" onclick="event.stopPropagation();">
+              <div style="font-size: 3em; margin-bottom: 15px;">🛒</div>
+              <h3 style="color: #2d5016; margin-bottom: 10px; font-size: 1.3em;">Added to Cart!</h3>
+              <p style="color: #555; margin-bottom: 20px; font-size: 1.05em;">
+                <strong>${itemName}</strong> has been added to your cart.
+              </p>
+              <button onclick="closeAddToCartPopup()" style="width: 100%; padding: 12px; background-color: #6b8e23; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                Continue Shopping
+              </button>
+            </div>
+          </div>
+          <style>
+            @keyframes slideIn {
+              from { transform: translateY(-20px); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+          </style>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHTML);
+        setTimeout(closeAddToCartPopup, 2000);
+      }
+
+      function closeAddToCartPopup() {
+        const overlay = document.getElementById('addToCartOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+
+      function showEmptyCartPopup() {
+        const popupHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 8999;" id="emptyCartOverlay">
+            <div style="background: white; padding: 40px; border-radius: 12px; max-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center;">
+              <div style="font-size: 3em; margin-bottom: 15px;">🛒</div>
+              <h3 style="color: #ff6b35; margin-bottom: 10px; font-size: 1.3em;">Cart is Empty</h3>
+              <p style="color: #555; margin-bottom: 20px; font-size: 1.05em;">
+                Please add items to your cart before proceeding to checkout.
+              </p>
+              <button onclick="closeEmptyCartPopup()" style="width: 100%; padding: 12px; background-color: #2d5016; color: white; border: none; border-radius: 8px; font-size: 1em; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                Close
+              </button>
+            </div>
+          </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHTML);
+      }
+
+      function closeEmptyCartPopup() {
+        const overlay = document.getElementById('emptyCartOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+
+      function showPaymentProcessingPopup(total, method) {
+        const popupHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 8999;" id="paymentProcessingOverlay">
+            <div style="background: white; padding: 40px; border-radius: 12px; max-width: 380px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); text-align: center;">
+              <div style="font-size: 3em; margin-bottom: 15px; animation: spin 1s linear infinite;">💳</div>
+              <h3 style="color: #2d5016; margin-bottom: 10px; font-size: 1.3em;">Processing Payment</h3>
+              <p style="color: #555; margin-bottom: 10px; font-size: 1.05em;">
+                <strong>Amount: Rs. ${total}</strong>
+              </p>
+              <p style="color: #666; margin-bottom: 20px; font-size: 0.95em;">
+                Method: ${method}
+              </p>
+              <div style="width: 100%; height: 4px; background: #ddd; border-radius: 2px; overflow: hidden; margin-bottom: 15px;">
+                <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #6b8e23, #ffeb3b); animation: progress 2s ease-in-out infinite;"></div>
+              </div>
+              <p style="color: #888; font-size: 0.9em;">Please wait...</p>
+            </div>
+          </div>
+          <style>
+            @keyframes spin {
+              from { transform: rotate(0deg); }
+              to { transform: rotate(360deg); }
+            }
+            @keyframes progress {
+              0%, 100% { transform: translateX(-100%); }
+              50% { transform: translateX(100%); }
+            }
+          </style>
+        `;
+        document.body.insertAdjacentHTML('beforeend', popupHTML);
+        setTimeout(closePaymentProcessingPopup, 2500);
+      }
+
+      function closePaymentProcessingPopup() {
+        const overlay = document.getElementById('paymentProcessingOverlay');
+        if (overlay) {
+          overlay.remove();
+        }
+      }
+    </script>
     <script type="module" src="/main.js"></script>
   </body>
 </html>

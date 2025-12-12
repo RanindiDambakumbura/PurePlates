@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="public/vite.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PurePlates - Fresh & Healthy Dining</title>
     <link rel="stylesheet" href="/style.css" />
@@ -23,7 +23,7 @@
       </div>
     </nav>
 
-    <section class="hero">
+    <section class="hero" style="background-image: url('public/hero-background.jpg'); background-size: cover; background-position: center;">
       <div class="hero-content">
         <h1>Welcome to PurePlates</h1>
         <p>Experience the finest fresh and healthy cuisine</p>
@@ -62,6 +62,7 @@
       </div>
     </section>
 
+
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
@@ -83,5 +84,36 @@
       </div>
     </footer>
     <script type="module" src="/main.js"></script>
+    <script>
+      document.getElementById('orderForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const orderData = {
+          customer_name: document.getElementById('customerName').value,
+          customer_email: document.getElementById('customerEmail').value,
+          customer_phone: document.getElementById('customerPhone').value,
+          items: document.getElementById('orderItems').value,
+          total_price: parseFloat(document.getElementById('totalPrice').value),
+        };
+
+        try {
+          const response = await fetch('http://localhost:3000/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData),
+          });
+
+          if (response.ok) {
+            document.getElementById('orderForm').reset();
+            document.getElementById('orderConfirmation').style.display = 'block';
+          } else {
+            alert('Failed to place order. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        }
+      });
+    </script>
   </body>
 </html>
