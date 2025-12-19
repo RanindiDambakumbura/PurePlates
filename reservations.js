@@ -11,17 +11,39 @@ form.addEventListener('submit', function(e) {
     name: document.getElementById('name').value,
     email: document.getElementById('email').value,
     phone: document.getElementById('phone').value,
-    date: document.getElementById('date').value,
-    time: document.getElementById('time').value,
+    reservation_date: document.getElementById('date').value,
+    reservation_time: document.getElementById('time').value,
     guests: document.getElementById('guests').value,
     occasion: document.getElementById('occasion').value,
-    notes: document.getElementById('notes').value
+    special_requests: document.getElementById('notes').value
   };
 
-  console.log('Reservation submitted:', formData);
+  console.log('📤 Sending reservation to backend:', formData);
 
-  form.style.display = 'none';
-  confirmationMessage.style.display = 'block';
+  // Send reservation to backend
+  fetch('/api/reservations', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('✅ Reservation response:', data);
+    if (data.success) {
+      form.style.display = 'none';
+      confirmationMessage.style.display = 'block';
+      console.log('✅ Reservation saved to database with ID:', data.id);
+    } else {
+      alert('Error: ' + (data.error || 'Failed to save reservation'));
+      console.error('❌ Error:', data.error);
+    }
+  })
+  .catch(error => {
+    console.error('❌ Network error:', error);
+    alert('Error submitting reservation: ' + error.message);
+  });
 });
 
 window.resetForm = function() {

@@ -50,14 +50,26 @@ app.get('/api/reservations', (req, res) => {
 // Create a new reservation
 app.post('/api/reservations', (req, res) => {
   const { name, email, phone, reservation_date, reservation_time, guests, occasion, special_requests } = req.body;
+  
+  // Validate required fields
+  if (!name || !email || !phone || !reservation_date || !guests) {
+    return res.status(400).json({ success: false, error: 'Missing required fields' });
+  }
+
   const query = 'INSERT INTO reservations (name, email, phone, reservation_date, reservation_time, guests, occasion, special_requests) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
   const values = [name, email, phone, reservation_date, reservation_time, guests, occasion, special_requests];
 
   db.query(query, values, (err, results) => {
     if (err) {
-      res.status(500).send(err);
+      console.error('❌ Reservation insert error:', err.message);
+      res.status(500).json({ success: false, error: err.message });
     } else {
-      res.status(201).json({ id: results.insertId, ...req.body });
+      console.log(`✅ Reservation saved with ID: ${results.insertId}`);
+      res.status(201).json({ 
+        success: true, 
+        id: results.insertId,
+        message: 'Reservation created successfully'
+      });
     }
   });
 });
@@ -230,6 +242,116 @@ app.post('/api/admin/logout', (req, res) => {
     res.json({ success: true });
   } else {
     res.json({ success: false, error: 'Invalid token' });
+  }
+});
+
+// ========== ORDERS MANAGEMENT (Admin) ==========
+// Update order status (Admin only)
+app.put('/api/orders/:id', verifyAdminToken, (req, res) => {
+  try {
+    const { id } = req.params;
+    const { order_status } = req.body;
+    
+    if (!order_status) {
+      return res.status(400).json({ success: false, error: 'Missing order status' });
+    }
+
+    const query = 'UPDATE orders SET order_status = ? WHERE id = ?';
+    db.query(query, [order_status, id], (err, results) => {
+      if (err) {
+        console.error('❌ Database error:', err.message);
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      console.log('✅ Order status updated:', id);
+      res.json({ success: true });
+    });
+  } catch (error) {
+    console.error('❌ Server error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Delete order (Admin only)
+app.delete('/api/orders/:id', verifyAdminToken, (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const query = 'DELETE FROM orders WHERE id = ?';
+    db.query(query, [id], (err, results) => {
+      if (err) {
+        console.error('❌ Database error:', err.message);
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      console.log('✅ Order deleted with ID:', id);
+      res.json({ success: true });
+    });
+  } catch (error) {
+    console.error('❌ Server error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ========== RESERVATIONS MANAGEMENT ==========
+// Get all reservations
+app.get('/api/reservations-admin', verifyAdminToken, (req, res) => {
+  db.query('SELECT * FROM reservations ORDER BY reservation_date DESC, reservation_time DESC', (err, results) => {
+    if (err) {
+      console.error('❌ Database error:', err.message);
+      res.status(500).json({ success: false, error: err.message });
+    } else {
+      console.log(`✅ Reservations query returned ${results ? results.length : 0} rows`);
+      if (results && results.length > 0) {
+        console.log('📊 First reservation:', JSON.stringify(results[0], null, 2));
+      }
+      res.json(results);
+    }
+  });
+});
+
+// Update reservation (Admin only)
+app.put('/api/reservations/:id', verifyAdminToken, (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, phone, reservation_date, reservation_time, guests, occasion, special_requests } = req.body;
+    
+    if (!name || !email || !phone || !reservation_date || !reservation_time || !guests) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+
+    const query = 'UPDATE reservations SET name = ?, email = ?, phone = ?, reservation_date = ?, reservation_time = ?, guests = ?, occasion = ?, special_requests = ? WHERE id = ?';
+    const values = [name, email, phone, reservation_date, reservation_time, guests, occasion || '', special_requests || '', id];
+
+    db.query(query, values, (err, results) => {
+      if (err) {
+        console.error('❌ Database error:', err.message);
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      console.log('✅ Reservation updated with ID:', id);
+      res.json({ success: true });
+    });
+  } catch (error) {
+    console.error('❌ Server error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Delete reservation (Admin only)
+app.delete('/api/reservations/:id', verifyAdminToken, (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const query = 'DELETE FROM reservations WHERE id = ?';
+    db.query(query, [id], (err, results) => {
+      if (err) {
+        console.error('❌ Database error:', err.message);
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      console.log('✅ Reservation deleted with ID:', id);
+      res.json({ success: true });
+    });
+  } catch (error) {
+    console.error('❌ Server error:', error.message);
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
