@@ -413,6 +413,20 @@
             <p>View and manage customer orders</p>
           </div>
 
+          <!-- Revenue Summary Card -->
+          <div id="revenueCard" style="background: linear-gradient(135deg, #2d5016 0%, #6b8e23 100%); color: white; padding: 25px 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+              <div>
+                <h3 style="margin: 0 0 8px 0; font-size: 0.95em; opacity: 0.9; font-weight: 500;">Total Revenue</h3>
+                <p id="totalRevenue" style="margin: 0; font-size: 2.2em; font-weight: bold;">Rs. 0.00</p>
+              </div>
+              <div style="text-align: right;">
+                <h3 style="margin: 0 0 8px 0; font-size: 0.95em; opacity: 0.9; font-weight: 500;">Total Orders</h3>
+                <p id="totalOrdersCount" style="margin: 0; font-size: 2.2em; font-weight: bold;">0</p>
+              </div>
+            </div>
+          </div>
+
           <div class="action-bar" style="justify-content: flex-end;">
             <button onclick="loadOrders()" style="background: #6b8e23; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">🔄 Refresh Orders</button>
             <label style="margin-left: 20px; display: flex; align-items: center; gap: 8px; color: #333; cursor: pointer;">
@@ -746,6 +760,21 @@
         console.log('📋 Displaying orders. Count:', orders ? orders.length : 0);
         const tbody = document.getElementById('ordersTableBody');
         
+        // Calculate total revenue
+        const totalAmount = orders && orders.length > 0 
+          ? orders.reduce((sum, order) => sum + (parseFloat(order.total_price) || 0), 0) 
+          : 0;
+        
+        // Update revenue card
+        const revenueElement = document.getElementById('totalRevenue');
+        const ordersCountElement = document.getElementById('totalOrdersCount');
+        if (revenueElement) {
+          revenueElement.textContent = `Rs. ${totalAmount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+        if (ordersCountElement) {
+          ordersCountElement.textContent = orders ? orders.length : 0;
+        }
+        
         if (!orders || orders.length === 0) {
           console.log('📭 No orders to display');
           tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 40px; color: #999;">📭 No orders in database yet. Orders will appear here when customers place them.</td></tr>';
@@ -815,7 +844,7 @@
                 ${order.special_instructions ? `<br/><em style="color: #666;">Note: ${escapeHtml(order.special_instructions)}</em>` : ''}
               </td>
               <td style="padding: 12px; font-size: 0.85em; max-width: 200px; overflow-y: auto; max-height: 80px;">${itemsText}</td>
-              <td style="padding: 12px;"><strong>Rs. ${order.total_price.toLocaleString('en-IN')}</strong></td>
+              <td style="padding: 12px;"><strong>Rs. ${parseFloat(order.total_price).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
               <td style="padding: 12px; font-size: 0.9em;">${paymentLabel}</td>
               <td style="padding: 12px;">
                 <select onchange="updateOrderStatus(${order.id}, this.value)" style="padding: 6px; border-radius: 4px; border: 1px solid #ddd; font-weight: bold; background: ${status.bg}; color: white; cursor: pointer;">
@@ -834,18 +863,17 @@
           `;
         });
 
-        // Add summary
-        const totalAmount = orders.reduce((sum, order) => sum + (order.total_price || 0), 0);
+        // Add summary row at the bottom of the table
         const summary = `
           <tr style="background: #f0f8ff; font-weight: bold;">
             <td colspan="6" style="padding: 15px; text-align: right;">Total Orders: ${orders.length} | Total Revenue:</td>
-            <td style="padding: 15px; background: #fffacd; color: #2d5016;">Rs. ${totalAmount.toLocaleString('en-IN')}</td>
+            <td style="padding: 15px; background: #fffacd; color: #2d5016;">Rs. ${totalAmount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
             <td colspan="3"></td>
           </tr>
         `;
         
         tbody.innerHTML = rowsHTML + summary;
-        console.log(`✅ Displayed ${orders.length} orders`);
+        console.log(`✅ Displayed ${orders.length} orders with total revenue: Rs. ${totalAmount.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`);
       }
 
       // Open modal to add new item
