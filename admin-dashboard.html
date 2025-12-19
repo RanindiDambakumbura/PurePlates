@@ -554,6 +554,24 @@
       </div>
     </div>
 
+    <!-- Order Items Modal -->
+    <div id="orderItemsModal" class="modal">
+      <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+          <h2 id="orderItemsModalTitle">Order Items</h2>
+          <button class="close-button" onclick="closeOrderItemsModal()">✕</button>
+        </div>
+
+        <div id="orderItemsContent" style="max-height: 60vh; overflow-y: auto;">
+          <!-- Order items will be displayed here -->
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" onclick="closeOrderItemsModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Reservation Modal -->
     <div id="reservationModal" class="modal">
       <div class="modal-content">
@@ -786,19 +804,41 @@
         orders.forEach((order, index) => {
           console.log(`📦 Processing order ${index + 1}:`, order);
           
-          // Parse items safely
-          let itemsText = '';
+          // Parse items and store for popup display
+          // MySQL JSON type may return as object or string, handle both cases
+          let items = [];
           let itemCount = 0;
           try {
-            const items = JSON.parse(order.items);
-            if (Array.isArray(items)) {
-              itemsText = items.map(item => `${escapeHtml(item.name)} (x${item.quantity})`).join('<br/>');
+            // Check if items is already an object/array (MySQL JSON type sometimes returns parsed)
+            if (typeof order.items === 'string') {
+              // Try to parse as JSON string
+              items = JSON.parse(order.items);
+            } else if (Array.isArray(order.items)) {
+              // Already an array
+              items = order.items;
+            } else if (order.items && typeof order.items === 'object') {
+              // If it's an object but not an array, try to convert
+              items = Array.isArray(order.items) ? order.items : [order.items];
+            }
+            
+            // Ensure items is an array
+            if (!Array.isArray(items)) {
+              console.warn('⚠️ Items is not an array for order', order.id, 'items:', order.items, 'type:', typeof order.items);
+              items = [];
+            }
+            
+            if (items.length > 0) {
               itemCount = items.length;
             }
+            
+            console.log(`📦 Order #${order.id} parsed ${itemCount} items:`, items);
           } catch (e) {
-            itemsText = order.items || 'N/A';
-            console.log('⚠️ Could not parse items for order', order.id);
+            console.error('⚠️ Could not parse items for order', order.id, 'Raw items:', order.items, 'Type:', typeof order.items, 'Error:', e);
+            items = [];
           }
+          
+          // Store items in order object for popup
+          order.parsedItems = items;
 
           // Format date
           let orderDate = 'N/A';
@@ -843,7 +883,11 @@
                 ${escapeHtml(order.city)} - ${escapeHtml(order.zip_code)}
                 ${order.special_instructions ? `<br/><em style="color: #666;">Note: ${escapeHtml(order.special_instructions)}</em>` : ''}
               </td>
-              <td style="padding: 12px; font-size: 0.85em; max-width: 200px; overflow-y: auto; max-height: 80px;">${itemsText}</td>
+              <td style="padding: 12px; text-align: center;">
+                <button class="btn-edit" onclick="viewOrderItems(${order.id})" style="padding: 8px 16px; font-size: 0.9em;">
+                  📦 View Items (${itemCount})
+                </button>
+              </td>
               <td style="padding: 12px;"><strong>Rs. ${parseFloat(order.total_price).toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</strong></td>
               <td style="padding: 12px; font-size: 0.9em;">${paymentLabel}</td>
               <td style="padding: 12px;">
@@ -1410,6 +1454,118 @@
           sessionStorage.removeItem('admin_token');
           window.location.href = 'admin.html';
         });
+      }
+
+      // View order items in popup
+      function viewOrderItems(orderId) {
+        const order = allOrders.find(o => o.id === orderId);
+        if (!order) {
+          console.error('Order not found:', orderId);
+          return;
+        }
+
+        console.log('📦 Viewing items for order #' + orderId, 'Raw order.items:', order.items);
+        
+        let items = [];
+        try {
+          // Use parsed items if available
+          if (order.parsedItems && Array.isArray(order.parsedItems)) {
+            items = order.parsedItems;
+            console.log('✅ Using parsed items:', items);
+          } else if (typeof order.items === 'string') {
+            // Try to parse as JSON string
+            items = JSON.parse(order.items);
+            console.log('✅ Parsed JSON string:', items);
+          } else if (Array.isArray(order.items)) {
+            // Already an array
+            items = order.items;
+            console.log('✅ Items already array:', items);
+          } else if (order.items && typeof order.items === 'object') {
+            // Try to convert object to array
+            items = Array.isArray(order.items) ? order.items : [order.items];
+            console.log('✅ Converted object to array:', items);
+          } else {
+            console.warn('⚠️ Unexpected items format:', typeof order.items, order.items);
+            items = [];
+          }
+          
+          // Ensure items is an array
+          if (!Array.isArray(items)) {
+            console.error('❌ Items is not an array:', items);
+            items = [];
+          }
+        } catch (e) {
+          console.error('❌ Error parsing items:', e, 'Raw items:', order.items);
+          items = [];
+        }
+
+        const modalTitle = document.getElementById('orderItemsModalTitle');
+        const modalContent = document.getElementById('orderItemsContent');
+
+        modalTitle.textContent = `Order #${order.id} - Items`;
+
+        if (!items || items.length === 0) {
+          modalContent.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;"><p>No items found in this order.</p></div>';
+        } else {
+          let itemsHTML = '';
+          let grandTotal = 0;
+
+          items.forEach((item, idx) => {
+            const itemName = escapeHtml(item.name || 'Unknown Item');
+            const quantity = item.quantity || 1;
+            const itemPrice = parseFloat(item.price || 0);
+            const subtotal = itemPrice * quantity;
+            grandTotal += subtotal;
+
+            itemsHTML += `
+              <div style="padding: ${idx > 0 ? '16px 0' : '0 0 16px'}; border-top: ${idx > 0 ? '2px solid #eee' : 'none'};">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                  <div style="flex: 1;">
+                    <h3 style="margin: 0 0 8px 0; color: #2d5016; font-size: 1.1em; font-weight: 600;">${itemName}</h3>
+                    <div style="display: flex; gap: 20px; color: #666; font-size: 0.95em;">
+                      <span><strong>Quantity:</strong> ${quantity}</span>
+                      <span><strong>Unit Price:</strong> Rs. ${itemPrice.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                    </div>
+                  </div>
+                  <div style="text-align: right; min-width: 120px;">
+                    <div style="font-size: 0.9em; color: #666; margin-bottom: 4px;">Subtotal</div>
+                    <div style="font-size: 1.2em; font-weight: bold; color: #2d5016;">
+                      Rs. ${subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+
+          // Add order summary
+          const orderTotal = parseFloat(order.total_price || 0);
+          itemsHTML += `
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 3px solid #2d5016;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f8ff; border-radius: 8px; margin-bottom: 12px;">
+                <span style="font-size: 1.1em; font-weight: 600; color: #333;">Items Total:</span>
+                <span style="font-size: 1.2em; font-weight: bold; color: #2d5016;">
+                  Rs. ${grandTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                </span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fffacd; border-radius: 8px;">
+                <span style="font-size: 1.2em; font-weight: bold; color: #2d5016;">Order Total:</span>
+                <span style="font-size: 1.4em; font-weight: bold; color: #2d5016;">
+                  Rs. ${orderTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                </span>
+              </div>
+            </div>
+          `;
+
+          modalContent.innerHTML = itemsHTML;
+        }
+
+        document.getElementById('orderItemsModal').classList.add('show');
+      }
+
+      // Close order items modal
+      function closeOrderItemsModal() {
+        document.getElementById('orderItemsModal').classList.remove('show');
       }
 
       // Escape HTML to prevent XSS
