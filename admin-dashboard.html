@@ -632,19 +632,43 @@
 
       // Load menu items on page load
       function loadMenuItems() {
+        console.log('📋 Loading menu items...');
         fetch('/api/menu-items')
-          .then(response => response.json())
+          .then(async response => {
+            console.log('📋 Response status:', response.status);
+            if (!response.ok) {
+              let errorMsg = `HTTP ${response.status}`;
+              try {
+                const err = await response.json();
+                errorMsg = err.error || errorMsg;
+              } catch (e) {
+                errorMsg = await response.text() || errorMsg;
+              }
+              throw new Error(errorMsg);
+            }
+            return response.json();
+          })
           .then(data => {
-            if (data.success) {
+            console.log('📋 Menu items data:', data);
+            if (data.success && data.items) {
               allItems = data.items;
               displayItems(allItems);
+              console.log(`✅ Loaded ${allItems.length} menu items`);
+            } else if (Array.isArray(data)) {
+              // Handle case where API returns array directly
+              allItems = data;
+              displayItems(allItems);
+              console.log(`✅ Loaded ${allItems.length} menu items (array format)`);
             } else {
-              showMessage('Error loading menu items', 'error');
+              console.error('❌ Unexpected data format:', data);
+              showMessage('Error loading menu items: Unexpected response format', 'error');
+              document.getElementById('itemsTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #f44336;">⚠️ Error loading menu items</td></tr>';
             }
           })
           .catch(error => {
-            console.error('Error:', error);
+            console.error('❌ Error loading menu items:', error);
             showMessage('Error loading menu items: ' + error.message, 'error');
+            document.getElementById('itemsTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #f44336;">⚠️ Error: ' + error.message + '</td></tr>';
           });
       }
 
@@ -862,9 +886,17 @@
         const category = document.getElementById('itemCategory').value;
         const token = sessionStorage.getItem('admin_token');
 
+        if (!token) {
+          showMessage('You must be logged in to perform this action', 'error');
+          window.location.href = 'admin.html';
+          return;
+        }
+
         const itemData = { name, description, price: parseInt(price), category };
         const method = currentItemId ? 'PUT' : 'POST';
         const url = currentItemId ? `/api/menu-items/${currentItemId}` : '/api/menu-items';
+
+        console.log(`${currentItemId ? '✏️ Updating' : '✨ Creating'} menu item:`, itemData);
 
         fetch(url, {
           method,
@@ -874,8 +906,22 @@
           },
           body: JSON.stringify(itemData)
         })
-        .then(response => response.json())
+        .then(async response => {
+          console.log('📡 Response status:', response.status);
+          if (!response.ok) {
+            let errorMsg = `HTTP ${response.status}`;
+            try {
+              const err = await response.json();
+              errorMsg = err.error || errorMsg;
+            } catch (e) {
+              errorMsg = await response.text() || errorMsg;
+            }
+            throw new Error(errorMsg);
+          }
+          return response.json();
+        })
         .then(data => {
+          console.log('📡 Response data:', data);
           if (data.success) {
             closeItemModal();
             loadMenuItems();
@@ -885,7 +931,7 @@
           }
         })
         .catch(error => {
-          console.error('Error:', error);
+          console.error('❌ Error saving item:', error);
           showMessage('Error saving item: ' + error.message, 'error');
         });
       }
@@ -905,15 +951,38 @@
         if (!itemToDelete) return;
 
         const token = sessionStorage.getItem('admin_token');
+        
+        if (!token) {
+          showMessage('You must be logged in to perform this action', 'error');
+          window.location.href = 'admin.html';
+          return;
+        }
+
+        console.log(`🗑️ Deleting menu item #${itemToDelete}`);
 
         fetch(`/api/menu-items/${itemToDelete}`, {
           method: 'DELETE',
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
           }
         })
-        .then(response => response.json())
+        .then(async response => {
+          console.log('📡 Response status:', response.status);
+          if (!response.ok) {
+            let errorMsg = `HTTP ${response.status}`;
+            try {
+              const err = await response.json();
+              errorMsg = err.error || errorMsg;
+            } catch (e) {
+              errorMsg = await response.text() || errorMsg;
+            }
+            throw new Error(errorMsg);
+          }
+          return response.json();
+        })
         .then(data => {
+          console.log('📡 Response data:', data);
           if (data.success) {
             closeConfirmModal();
             loadMenuItems();
@@ -923,7 +992,7 @@
           }
         })
         .catch(error => {
-          console.error('Error:', error);
+          console.error('❌ Error deleting item:', error);
           showMessage('Error deleting item: ' + error.message, 'error');
         });
       }
@@ -1276,9 +1345,26 @@
 
       // Show message
       function showMessage(text, type) {
-        const container = document.getElementById('messageContainer');
+        // Try to find message container in active section or menu section
+        let container = document.getElementById('messageContainer');
+        if (!container) {
+          // Create a temporary message container if none exists
+          const activeSection = document.querySelector('.section.active');
+          if (activeSection) {
+            container = document.createElement('div');
+            container.id = 'messageContainer';
+            activeSection.insertBefore(container, activeSection.firstChild.nextSibling);
+          } else {
+            console.error('No active section found for message display');
+            alert(text); // Fallback to alert
+            return;
+          }
+        }
         container.innerHTML = `<div class="message ${type}">${text}</div>`;
-        container.querySelector('.message').style.display = 'block';
+        const messageEl = container.querySelector('.message');
+        if (messageEl) {
+          messageEl.style.display = 'block';
+        }
         setTimeout(() => {
           container.innerHTML = '';
         }, 4000);
@@ -1312,3 +1398,4 @@
     </script>
   </body>
 </html>
+
