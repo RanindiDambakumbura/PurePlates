@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Database configuration
 $db_host = 'localhost';
 $db_user = 'root';
-$db_pass = '';
+$db_pass = 'root@SQL4';
 $db_name = 'resturent_db';
 
 // Create connection
