@@ -26,133 +26,9 @@
     </section>
 
     <section class="menu-section">
-      <div class="container">
-        <div class="menu-category">
-          <h2>Appetizers</h2>
-          <div class="menu-grid">
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Garden Fresh Salad</h3>
-                <span class="price">Rs. 1200</span>
-              </div>
-              <p>Mixed greens, cherry tomatoes, cucumber, and balsamic vinaigrette</p>
-              <button class="btn-secondary" onclick="addToCart('Garden Fresh Salad', 1200)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Quinoa Bowl</h3>
-                <span class="price">Rs. 1400</span>
-              </div>
-              <p>Organic quinoa with roasted vegetables and tahini dressing</p>
-              <button class="btn-secondary" onclick="addToCart('Quinoa Bowl', 1400)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Avocado Toast</h3>
-                <span class="price">Rs. 1100</span>
-              </div>
-              <p>Smashed avocado on artisan bread with cherry tomatoes</p>
-              <button class="btn-secondary" onclick="addToCart('Avocado Toast', 1100)">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-category">
-          <h2>Main Courses</h2>
-          <div class="menu-grid">
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Grilled Salmon</h3>
-                <span class="price">Rs. 2800</span>
-              </div>
-              <p>Wild-caught salmon with seasonal vegetables and lemon butter</p>
-              <button class="btn-secondary" onclick="addToCart('Grilled Salmon', 2800)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Herb Chicken</h3>
-                <span class="price">Rs. 2400</span>
-              </div>
-              <p>Free-range chicken breast with herb sauce and roasted potatoes</p>
-              <button class="btn-secondary" onclick="addToCart('Herb Chicken', 2400)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Vegetable Pasta</h3>
-                <span class="price">Rs. 2200</span>
-              </div>
-              <p>Fresh pasta with seasonal vegetables and pesto sauce</p>
-              <button class="btn-secondary" onclick="addToCart('Vegetable Pasta', 2200)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Grass-Fed Steak</h3>
-                <span class="price">Rs. 3200</span>
-              </div>
-              <p>Premium cut with garlic butter and seasonal greens</p>
-              <button class="btn-secondary" onclick="addToCart('Grass-Fed Steak', 3200)">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-category">
-          <h2>Desserts</h2>
-          <div class="menu-grid">
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Fresh Fruit Platter</h3>
-                <span class="price">Rs. 1000</span>
-              </div>
-              <p>Seasonal fruits with honey yogurt dip</p>
-              <button class="btn-secondary" onclick="addToCart('Fresh Fruit Platter', 1000)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Dark Chocolate Mousse</h3>
-                <span class="price">Rs. 1200</span>
-              </div>
-              <p>Rich dark chocolate mousse with fresh berries</p>
-              <button class="btn-secondary" onclick="addToCart('Dark Chocolate Mousse', 1200)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Lemon Tart</h3>
-                <span class="price">Rs. 1100</span>
-              </div>
-              <p>Homemade lemon tart with meringue topping</p>
-              <button class="btn-secondary" onclick="addToCart('Lemon Tart', 1100)">Add to Cart</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="menu-category">
-          <h2>Beverages</h2>
-          <div class="menu-grid">
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Fresh Juices</h3>
-                <span class="price">Rs. 600</span>
-              </div>
-              <p>Orange, apple, carrot, or green detox blend</p>
-              <button class="btn-secondary" onclick="addToCart('Fresh Juices', 600)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Organic Coffee</h3>
-                <span class="price">Rs. 500</span>
-              </div>
-              <p>Espresso, cappuccino, or latte</p>
-              <button class="btn-secondary" onclick="addToCart('Organic Coffee', 500)">Add to Cart</button>
-            </div>
-            <div class="menu-item">
-              <div class="menu-item-header">
-                <h3>Herbal Tea</h3>
-                <span class="price">Rs. 400</span>
-              </div>
-              <p>Selection of premium loose leaf teas</p>
-              <button class="btn-secondary" onclick="addToCart('Herbal Tea', 400)">Add to Cart</button>
-            </div>
-          </div>
+      <div class="container" id="menuContainer">
+        <div style="text-align: center; padding: 40px;">
+          <p style="color: #666; font-size: 1.1em;">Loading menu items...</p>
         </div>
       </div>
     </section>
@@ -202,6 +78,152 @@
     </footer>
     <script>
       let cart = [];
+      let menuItems = [];
+
+      // Load menu items from API
+      function loadMenuItems() {
+        console.log('📋 Loading menu items from API...');
+        fetch('/api/menu-items')
+          .then(async response => {
+            console.log('📋 Response status:', response.status);
+            if (!response.ok) {
+              let errorMsg = `HTTP ${response.status}`;
+              try {
+                const err = await response.json();
+                errorMsg = err.error || errorMsg;
+              } catch (e) {
+                errorMsg = await response.text() || errorMsg;
+              }
+              throw new Error(errorMsg);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('📋 Menu items data:', data);
+            let items = [];
+            if (data.success && data.items) {
+              items = data.items;
+            } else if (Array.isArray(data)) {
+              items = data;
+            } else {
+              throw new Error('Unexpected data format');
+            }
+            
+            menuItems = items;
+            displayMenuItems(items);
+            console.log(`✅ Loaded ${items.length} menu items`);
+          })
+          .catch(error => {
+            console.error('❌ Error loading menu items:', error);
+            const container = document.getElementById('menuContainer');
+            container.innerHTML = `
+              <div style="text-align: center; padding: 40px;">
+                <p style="color: #f44336; font-size: 1.1em;">⚠️ Error loading menu items: ${error.message}</p>
+                <button onclick="loadMenuItems()" style="margin-top: 20px; padding: 12px 24px; background-color: #2d5016; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                  Retry
+                </button>
+              </div>
+            `;
+          });
+      }
+
+      // Display menu items grouped by category
+      function displayMenuItems(items) {
+        const container = document.getElementById('menuContainer');
+        
+        if (!items || items.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 40px;">
+              <p style="color: #666; font-size: 1.1em;">No menu items available at the moment.</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Group items by category
+        const itemsByCategory = {};
+        items.forEach(item => {
+          const category = item.category || 'Other';
+          if (!itemsByCategory[category]) {
+            itemsByCategory[category] = [];
+          }
+          itemsByCategory[category].push(item);
+        });
+
+        // Generate HTML for each category
+        let html = '';
+        const categoryOrder = ['Appetizers', 'Main Courses', 'Desserts', 'Beverages'];
+        
+        // First, render categories in the specified order
+        categoryOrder.forEach(category => {
+          if (itemsByCategory[category] && itemsByCategory[category].length > 0) {
+            html += generateCategoryHTML(category, itemsByCategory[category]);
+            delete itemsByCategory[category];
+          }
+        });
+
+        // Then render any remaining categories
+        Object.keys(itemsByCategory).forEach(category => {
+          html += generateCategoryHTML(category, itemsByCategory[category]);
+        });
+
+        container.innerHTML = html;
+      }
+
+      // Escape HTML to prevent XSS
+      function escapeHtml(text) {
+        if (!text) return '';
+        const map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        };
+        return String(text).replace(/[&<>"']/g, m => map[m]);
+      }
+
+      // Generate HTML for a category
+      function generateCategoryHTML(category, items) {
+        let itemsHTML = '';
+        items.forEach(item => {
+          const price = parseFloat(item.price).toLocaleString('en-IN');
+          const escapedName = escapeHtml(item.name);
+          const escapedDesc = escapeHtml(item.description);
+          // Use data attributes to avoid issues with quotes in item names
+          itemsHTML += `
+            <div class="menu-item">
+              <div class="menu-item-header">
+                <h3>${escapedName}</h3>
+                <span class="price">Rs. ${price}</span>
+              </div>
+              <p>${escapedDesc}</p>
+              <button class="btn-secondary" data-item-name="${escapedName}" data-item-price="${item.price}" onclick="addToCartFromButton(this)">Add to Cart</button>
+            </div>
+          `;
+        });
+
+        return `
+          <div class="menu-category">
+            <h2>${escapeHtml(category)}</h2>
+            <div class="menu-grid">
+              ${itemsHTML}
+            </div>
+          </div>
+        `;
+      }
+
+      // Helper function to add to cart from button (avoids quote escaping issues)
+      function addToCartFromButton(button) {
+        const itemName = button.getAttribute('data-item-name');
+        const itemPrice = parseFloat(button.getAttribute('data-item-price'));
+        addToCart(itemName, itemPrice);
+      }
+
+      // Load menu items when page loads
+      document.addEventListener('DOMContentLoaded', () => {
+        loadMenuItems();
+      });
 
       function addToCart(itemName, itemPrice) {
         const existingItem = cart.find(item => item.name === itemName);
