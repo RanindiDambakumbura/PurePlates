@@ -1,74 +1,130 @@
-// Get reference to the reservation form element
-const form = document.getElementById('reservationForm');
-// Get reference to the confirmation message element
+// ============================================
+// RESERVATION FORM SCRIPT
+// Handles form submission and date validation
+// ============================================
+
+// Get form and confirmation message elements
+const reservationForm = document.getElementById('reservationForm');
 const confirmationMessage = document.getElementById('confirmationMessage');
 
-// Get today's date in YYYY-MM-DD format for date input minimum value
-const today = new Date().toISOString().split('T')[0];
-// Set minimum date attribute to prevent selecting past dates
-document.getElementById('date').setAttribute('min', today);
+// Set minimum date to today (prevent past dates)
+setMinimumDate();
 
-// Add submit event listener to the form
-form.addEventListener('submit', function(e) {
-  // Prevent default form submission (page reload)
-  e.preventDefault();
+// Listen for form submission
+reservationForm.addEventListener('submit', handleFormSubmit);
 
-  // Collect form data into an object
-  const formData = {
-    name: document.getElementById('name').value,                    // Get customer name
-    email: document.getElementById('email').value,                  // Get customer email
-    phone: document.getElementById('phone').value,                 // Get customer phone
-    reservation_date: document.getElementById('date').value,        // Get reservation date
-    reservation_time: document.getElementById('time').value,       // Get reservation time
-    guests: document.getElementById('guests').value,                // Get number of guests
-    occasion: document.getElementById('occasion').value,           // Get special occasion (optional)
-    special_requests: document.getElementById('notes').value        // Get special requests (optional)
+// ============================================
+// FUNCTIONS
+// ============================================
+
+// Set the minimum date for date picker to today
+function setMinimumDate() {
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
+  const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
+  const todayString = year + '-' + month + '-' + day;
+  
+  // Set minimum date attribute
+  const dateInput = document.getElementById('date');
+  if (dateInput) {
+    dateInput.setAttribute('min', todayString);
+  }
+}
+
+// Handle form submission
+function handleFormSubmit(event) {
+  // Prevent page reload
+  event.preventDefault();
+  
+  // Get all form data
+  const formData = getFormData();
+  
+  // Send data to server
+  sendReservationToServer(formData);
+}
+
+// Collect all form field values into an object
+function getFormData() {
+  return {
+    name: getFieldValue('name'),
+    email: getFieldValue('email'),
+    phone: getFieldValue('phone'),
+    reservation_date: getFieldValue('date'),
+    reservation_time: getFieldValue('time'),
+    guests: getFieldValue('guests'),
+    occasion: getFieldValue('occasion'),
+    special_requests: getFieldValue('notes')
   };
+}
 
-  // Log form data to console for debugging
-  console.log('📤 Sending reservation to backend:', formData);
+// Helper function to get a field value by ID
+function getFieldValue(fieldId) {
+  const field = document.getElementById(fieldId);
+  return field ? field.value : '';
+}
 
-  // Send reservation to backend API
+// Send reservation data to the server
+function sendReservationToServer(formData) {
+  // Show loading message (optional)
+  console.log('Sending reservation...');
+  
+  // Make API request
   fetch('/api/reservations', {
-    method: 'POST',  // Use POST method to create new reservation
+    method: 'POST',
     headers: {
-      'Content-Type': 'application/json'  // Specify JSON content type
+      'Content-Type': 'application/json'
     },
-    body: JSON.stringify(formData)  // Convert form data to JSON string
+    body: JSON.stringify(formData)
   })
-  .then(response => response.json())  // Parse response as JSON
-  .then(data => {
-    // Log response data to console
-    console.log('✅ Reservation response:', data);
-    // Check if reservation was successfully created
-    if (data.success) {
-      // Hide the form
-      form.style.display = 'none';
-      // Show confirmation message
-      confirmationMessage.style.display = 'block';
-      // Log success message with reservation ID
-      console.log('✅ Reservation saved to database with ID:', data.id);
-    } else {
-      // Show error alert to user
-      alert('Error: ' + (data.error || 'Failed to save reservation'));
-      // Log error to console
-      console.error('❌ Error:', data.error);
-    }
+  .then(function(response) {
+    // Convert response to JSON
+    return response.json();
   })
-  .catch(error => {
-    // Handle network or other errors
-    console.error('❌ Network error:', error);
-    // Show error alert to user
-    alert('Error submitting reservation: ' + error.message);
+  .then(function(data) {
+    // Handle server response
+    handleServerResponse(data);
+  })
+  .catch(function(error) {
+    // Handle errors
+    handleError(error);
   });
-});
+}
 
-// Define global function to reset the form (called from HTML)
+// Handle successful server response
+function handleServerResponse(data) {
+  if (data.success) {
+    // Success! Show confirmation message
+    showConfirmation();
+    console.log('Reservation saved! ID: ' + data.id);
+  } else {
+    // Server returned an error
+    showError(data.error || 'Failed to save reservation');
+  }
+}
+
+// Show confirmation message and hide form
+function showConfirmation() {
+  reservationForm.style.display = 'none';
+  confirmationMessage.style.display = 'block';
+}
+
+// Show error message to user
+function showError(errorMessage) {
+  alert('Error: ' + errorMessage);
+  console.error('Error:', errorMessage);
+}
+
+// Handle network or other errors
+function handleError(error) {
+  console.error('Network error:', error);
+  alert('Error submitting reservation. Please check your connection and try again.');
+}
+
+// Reset form (called from HTML button)
 window.resetForm = function() {
-  // Reset all form fields to their default values
-  form.reset();
-  // Show the form again
-  form.style.display = 'flex';
-  // Hide the confirmation message
+  reservationForm.reset();
+  reservationForm.style.display = 'flex';
   confirmationMessage.style.display = 'none';
 };

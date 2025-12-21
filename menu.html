@@ -103,13 +103,11 @@
         </div>
       </div>
     </footer>
-    <script>
-      let cart = [];
-      let menuItems = [];
-
-      // Load menu items from API
-      function loadMenuItems() {
-        console.log('📋 Loading menu items from API...');
+    <!-- External JavaScript files -->
+    <script src="/js/menu.js"></script>
+    <script src="/main.js"></script>
+  </body>
+</html>
         fetch('/api/menu-items')
           .then(async response => {
             console.log('📋 Response status:', response.status);

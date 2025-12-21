@@ -1,37 +1,60 @@
-// Wait for DOM content to be fully loaded before executing
+// ============================================
+// MAIN NAVIGATION SCRIPT
+// Handles navigation highlighting and smooth scrolling
+// ============================================
+
+// Wait for page to fully load before running code
 document.addEventListener('DOMContentLoaded', function() {
-  // Select all navigation menu links
+  
+  // STEP 1: Highlight active navigation link
+  highlightActiveNavLink();
+  
+  // STEP 2: Setup smooth scrolling for anchor links
+  setupSmoothScrolling();
+});
+
+// Function to highlight the current page in navigation
+function highlightActiveNavLink() {
+  // Get all navigation links
   const navLinks = document.querySelectorAll('.nav-menu a');
-  // Get current page filename from URL path (e.g., 'index.html' from '/path/index.html')
+  
+  // Get current page name (e.g., 'index.html')
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-  // Loop through each navigation link
-  navLinks.forEach(link => {
-    // Get the href attribute value of the link
+  // Loop through each link
+  navLinks.forEach(function(link) {
+    // Get the page this link points to
     const linkPage = link.getAttribute('href');
-    // Check if this link matches the current page
+    
+    // If this link matches current page, add 'active' class
     if (linkPage === currentPage) {
-      // Add 'active' class to highlight the current page in navigation
       link.classList.add('active');
     }
   });
+}
 
-  // Select all anchor links that start with '#' (internal page links)
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    // Add click event listener to each anchor link
-    anchor.addEventListener('click', function (e) {
-      // Prevent default anchor link behavior (jumping to section)
-      e.preventDefault();
-      // Get the target element using the href attribute (e.g., '#section')
-      const target = document.querySelector(this.getAttribute('href'));
-      // Check if target element exists
-      if (target) {
-        // Smoothly scroll to the target element
-        target.scrollIntoView({
-          behavior: 'smooth',  // Use smooth scrolling animation
-          block: 'start'        // Align element to top of viewport
+// Function to make anchor links scroll smoothly
+function setupSmoothScrolling() {
+  // Get all links that start with '#' (like #section1)
+  const anchorLinks = document.querySelectorAll('a[href^="#"]');
+
+  // Add click handler to each link
+  anchorLinks.forEach(function(anchor) {
+    anchor.addEventListener('click', function(event) {
+      // Stop the default jump behavior
+      event.preventDefault();
+      
+      // Get the target element ID from href (remove the #)
+      const targetId = this.getAttribute('href');
+      const targetElement = document.querySelector(targetId);
+      
+      // If target exists, scroll to it smoothly
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: 'smooth',  // Smooth animation
+          block: 'start'        // Align to top
         });
       }
     });
   });
-});
+}
