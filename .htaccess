@@ -1,0 +1,7 @@
+RewriteEngine On
+
+# Route /api/* requests to backend/api.php and pass the path
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ backend/api.php?path=$1 [QSA,L]
+
