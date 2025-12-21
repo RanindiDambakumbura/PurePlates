@@ -1,10 +1,17 @@
 <!doctype html>
+<!-- HTML5 document type declaration -->
 <html lang="en">
+  <!-- Document head section -->
   <head>
+    <!-- Character encoding declaration -->
     <meta charset="UTF-8" />
+    <!-- Website favicon -->
     <link rel="icon" type="image/svg+xml" href="public/vite.png" />
+    <!-- Viewport meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Page title -->
     <title>Admin Dashboard - PurePlates</title>
+    <!-- Inline CSS styles for admin dashboard -->
     <style>
       * {
         margin: 0;
@@ -357,23 +364,30 @@
     </style>
   </head>
   <body>
+    <!-- Main dashboard container with sidebar and content -->
     <div class="dashboard-container">
-      <!-- Sidebar -->
+      <!-- Sidebar navigation -->
       <div class="sidebar">
+        <!-- Sidebar logo/branding -->
         <div class="sidebar-logo">🍽️ PurePlates Admin</div>
+        <!-- Sidebar navigation menu -->
         <div class="sidebar-menu">
           <ul>
+            <!-- Menu items management link -->
             <li><a href="#menu" class="nav-link active" onclick="showSection('menu')">📋 Menu Items</a></li>
+            <!-- Orders management link -->
             <li><a href="#orders" class="nav-link" onclick="showSection('orders')">📦 Orders</a></li>
+            <!-- Reservations management link -->
             <li><a href="#reservations" class="nav-link" onclick="showSection('reservations')">📅 Reservations</a></li>
           </ul>
         </div>
+        <!-- Logout button -->
         <button class="logout-button" onclick="handleLogout()">🚪 Logout</button>
       </div>
 
-      <!-- Main Content -->
+      <!-- Main content area -->
       <div class="main-content">
-        <!-- Menu Items Section -->
+        <!-- Menu Items Section - for managing restaurant menu -->
         <div id="menuSection" class="section">
           <div class="page-header">
             <h1>Menu Items Management</h1>

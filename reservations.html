@@ -1,37 +1,58 @@
 <!doctype html>
+<!-- HTML5 document type declaration -->
 <html lang="en">
+  <!-- Document head section -->
   <head>
+    <!-- Character encoding declaration -->
     <meta charset="UTF-8" />
+    <!-- Website favicon -->
     <link rel="icon" type="image/svg+xml" href="public/vite.png" />
+    <!-- Viewport meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Page title -->
     <title>Reservations - PurePlates</title>
+    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="/style.css" />
   </head>
+  <!-- Document body -->
   <body>
+    <!-- Navigation bar -->
     <nav class="navbar">
       <div class="nav-container">
+        <!-- Restaurant logo -->
         <div class="logo">PurePlates</div>
+        <!-- Navigation menu -->
         <ul class="nav-menu">
           <li><a href="index.html">Home</a></li>
           <li><a href="menu.html">Menu</a></li>
           <li><a href="about.html">About</a></li>
+          <!-- Active page indicator -->
           <li><a href="reservations.html" class="active">Reservations</a></li>
         </ul>
       </div>
     </nav>
 
+    <!-- Page header section -->
     <section class="page-header">
+      <!-- Main page heading -->
       <h1>Make a Reservation</h1>
+      <!-- Page subtitle -->
       <p>Book your table and join us for an unforgettable dining experience</p>
     </section>
 
+    <!-- Reservation section with form and information -->
     <section class="reservation-section">
       <div class="container">
+        <!-- Two-column layout: info and form -->
         <div class="reservation-content">
+          <!-- Left column: Reservation information -->
           <div class="reservation-info">
+            <!-- Section heading -->
             <h2>Reserve Your Table</h2>
+            <!-- Introduction text -->
             <p>We look forward to serving you at PurePlates. Please fill out the form to make a reservation, and we'll confirm your booking shortly.</p>
 
+            <!-- Info box 1: Restaurant contact information -->
             <div class="info-box">
               <h3>Restaurant Information</h3>
               <p><strong>Address:</strong> 123 Health Street</p>
@@ -39,19 +60,23 @@
               <p><strong>Email:</strong> reservations@pureplates.com</p>
             </div>
 
+            <!-- Info box 2: Operating hours -->
             <div class="info-box">
               <h3>Hours of Operation</h3>
               <p><strong>Monday - Friday:</strong> 11:00 AM - 10:00 PM</p>
               <p><strong>Saturday - Sunday:</strong> 10:00 AM - 11:00 PM</p>
             </div>
 
+            <!-- Info box 3: Reservation policy -->
             <div class="info-box">
               <h3>Reservation Policy</h3>
               <p>Reservations are held for 15 minutes past the booking time. For parties of 8 or more, please call us directly.</p>
             </div>
           </div>
 
+          <!-- Right column: Reservation form -->
           <div class="reservation-form-container">
+            <!-- Reservation form (submitted via JavaScript) -->
             <form id="reservationForm" class="reservation-form">
               <div class="form-group">
                 <label for="name">Full Name</label>

@@ -1,10 +1,17 @@
 <!doctype html>
+<!-- HTML5 document type declaration -->
 <html lang="en">
+  <!-- Document head section -->
   <head>
+    <!-- Character encoding declaration -->
     <meta charset="UTF-8" />
+    <!-- Website favicon -->
     <link rel="icon" type="image/svg+xml" href="public/vite.png" />
+    <!-- Viewport meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Page title -->
     <title>Admin Login - PurePlates</title>
+    <!-- Inline CSS styles for admin login page -->
     <style>
       * {
         margin: 0;
@@ -135,16 +142,24 @@
     </style>
   </head>
   <body>
+    <!-- Login container -->
     <div class="login-container">
+      <!-- Login header section -->
       <div class="login-header">
+        <!-- Restaurant name -->
         <h1>PurePlates</h1>
+        <!-- Subtitle -->
         <p>Admin Dashboard</p>
       </div>
 
+      <!-- Error message container (hidden by default) -->
       <div class="error-message" id="errorMessage"></div>
+      <!-- Success message container (hidden by default) -->
       <div class="success-message" id="successMessage"></div>
 
+      <!-- Login form -->
       <form id="loginForm" onsubmit="handleLogin(event)">
+        <!-- Username input field -->
         <div class="form-group">
           <label for="username">Username</label>
           <input 
@@ -156,6 +171,7 @@
           />
         </div>
 
+        <!-- Password input field -->
         <div class="form-group">
           <label for="password">Password</label>
           <input 
@@ -167,20 +183,27 @@
           />
         </div>
 
+        <!-- Submit button -->
         <button type="submit" class="login-button">Login to Admin Panel</button>
       </form>
 
+      <!-- Back to home link -->
       <div class="back-link">
         <a href="index.html">← Back to Home</a>
       </div>
     </div>
 
+    <!-- JavaScript for login functionality -->
     <script>
+      // Handle login form submission
       function handleLogin(event) {
+        // Prevent default form submission
         event.preventDefault();
         
+        // Get username and password from form inputs
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
+        // Get references to message elements
         const errorMsg = document.getElementById('errorMessage');
         const successMsg = document.getElementById('successMessage');
 
@@ -188,38 +211,44 @@
         errorMsg.style.display = 'none';
         successMsg.style.display = 'none';
 
-        // Send login request to backend
+        // Send login request to backend API
         fetch('/api/admin/login', {
-          method: 'POST',
+          method: 'POST',  // HTTP POST method
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json'  // JSON content type
           },
-          body: JSON.stringify({ username, password })
+          body: JSON.stringify({ username, password })  // Send credentials as JSON
         })
-        .then(response => response.json())
+        .then(response => response.json())  // Parse response as JSON
         .then(data => {
+          // Check if login was successful
           if (data.success) {
             // Store auth token in sessionStorage (cleared when browser closes)
             sessionStorage.setItem('admin_token', data.token);
+            // Show success message
             successMsg.textContent = 'Login successful! Redirecting...';
             successMsg.style.display = 'block';
+            // Redirect to admin dashboard after 1.5 seconds
             setTimeout(() => {
               window.location.href = 'admin-dashboard.html';
             }, 1500);
           } else {
+            // Show error message
             errorMsg.textContent = data.error || 'Login failed. Invalid credentials.';
             errorMsg.style.display = 'block';
+            // Clear password field for security
             document.getElementById('password').value = '';
           }
         })
         .catch(error => {
+          // Handle network or other errors
           console.error('Error:', error);
           errorMsg.textContent = 'Error connecting to server. Please try again.';
           errorMsg.style.display = 'block';
         });
       }
 
-      // Check if already logged in
+      // Check if already logged in (redirect if token exists)
       if (sessionStorage.getItem('admin_token')) {
         window.location.href = 'admin-dashboard.html';
       }
