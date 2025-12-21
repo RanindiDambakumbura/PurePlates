@@ -1,30 +1,18 @@
 <!doctype html>
-<!-- HTML5 document type declaration -->
 <html lang="en">
-  <!-- Document head section -->
   <head>
-    <!-- Character encoding declaration -->
     <meta charset="UTF-8" />
-    <!-- Website favicon -->
     <link rel="icon" type="image/svg+xml" href="public/vite.png" />
-    <!-- Viewport meta tag for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Page title -->
     <title>Menu - PurePlates</title>
-    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="/style.css" />
   </head>
-  <!-- Document body -->
   <body>
-    <!-- Navigation bar -->
     <nav class="navbar">
       <div class="nav-container">
-        <!-- Restaurant logo -->
         <div class="logo">PurePlates</div>
-        <!-- Navigation menu -->
         <ul class="nav-menu">
           <li><a href="index.html">Home</a></li>
-          <!-- Active page indicator -->
           <li><a href="menu.html" class="active">Menu</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="reservations.html">Reservations</a></li>
@@ -32,19 +20,14 @@
       </div>
     </nav>
 
-    <!-- Page header section -->
     <section class="page-header">
-      <!-- Main page heading -->
       <h1>Our Menu</h1>
-      <!-- Page subtitle -->
       <p>Fresh, healthy, and delicious dishes crafted with care</p>
     </section>
 
-    <!-- Menu section - dynamically populated by JavaScript -->
+    <!-- Menu items loaded dynamically via API -->
     <section class="menu-section">
-      <!-- Container for menu items (loaded via API) -->
       <div class="container" id="menuContainer">
-        <!-- Loading message displayed while fetching menu items -->
         <div style="text-align: center; padding: 40px;">
           <p style="color: #666; font-size: 1.1em;">Loading menu items...</p>
         </div>
@@ -54,22 +37,14 @@
     <!-- Shopping cart section -->
     <section class="cart-section">
       <div class="container">
-        <!-- Cart heading -->
         <h2>Your Shopping Cart</h2>
-        <!-- Container for cart items (dynamically updated) -->
         <div id="cartItems" class="cart-items">
-          <!-- Default empty cart message -->
           <p>Your cart is empty. Start adding dishes!</p>
         </div>
-        <!-- Cart summary section (hidden when cart is empty) -->
         <div id="cartSummary" class="cart-summary" style="display: none;">
-          <!-- Summary heading -->
           <h3>Order Summary</h3>
-          <!-- Total price display (updated dynamically) -->
           <p>Total: Rs. <span id="cartTotal">0.00</span></p>
-          <!-- Button to proceed to checkout -->
           <button class="btn-primary" onclick="proceedToCheckout()">Proceed to Checkout</button>
-          <!-- Button to clear all items from cart -->
           <button class="btn-secondary" onclick="clearCart()">Clear Cart</button>
         </div>
       </div>
@@ -103,11 +78,13 @@
         </div>
       </div>
     </footer>
-    <!-- External JavaScript files -->
-    <script src="/js/menu.js"></script>
-    <script src="/main.js"></script>
-  </body>
-</html>
+    <script>
+      let cart = [];
+      let menuItems = [];
+
+      // Load menu items from API
+      function loadMenuItems() {
+        console.log('📋 Loading menu items from API...');
         fetch('/api/menu-items')
           .then(async response => {
             console.log('📋 Response status:', response.status);

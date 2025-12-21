@@ -1,13 +1,10 @@
 # Enable Apache URL rewriting engine
 RewriteEngine On
 
-# Route /api/* requests to backend/api.php and pass the path
-# Condition: Check if the requested file does not exist as a physical file
-RewriteCond %{REQUEST_FILENAME} !-f
-# Condition: Check if the requested path does not exist as a directory
-RewriteCond %{REQUEST_FILENAME} !-d
-# Rule: Rewrite /api/anything to backend/api.php?path=anything
+# Route /api/* requests to backend/api.php
 # QSA = Query String Append (preserve existing query parameters)
 # L = Last rule (stop processing further rules)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^api/(.*)$ backend/api.php?path=$1 [QSA,L]
 

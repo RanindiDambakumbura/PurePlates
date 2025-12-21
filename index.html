@@ -1,189 +1,117 @@
 <!doctype html>
-<!-- HTML5 document type declaration -->
 <html lang="en">
-  <!-- Document head section - contains metadata and external resources -->
   <head>
-    <!-- Character encoding declaration (UTF-8 supports all characters) -->
     <meta charset="UTF-8" />
-    <!-- Website favicon (icon displayed in browser tab) -->
     <link rel="icon" type="image/svg+xml" href="public/vite.png" />
-    <!-- Viewport meta tag for responsive design on mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Page title displayed in browser tab -->
     <title>PurePlates - Fresh & Healthy Dining</title>
-    <!-- Link to external CSS stylesheet -->
     <link rel="stylesheet" href="/style.css" />
-    <!-- Open Graph meta tag for social media sharing (image preview) -->
     <meta property="og:image" content="https://bolt.new/static/og_default.png">
-    <!-- Twitter Card meta tag for Twitter sharing -->
     <meta name="twitter:card" content="summary_large_image">
-    <!-- Twitter Card image meta tag -->
     <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
 </head>
-  <!-- Document body section - contains visible page content -->
   <body>
-    <!-- Navigation bar section -->
     <nav class="navbar">
-      <!-- Navigation container for layout -->
       <div class="nav-container">
-        <!-- Restaurant logo/brand name -->
         <div class="logo">PurePlates</div>
-        <!-- Navigation menu list -->
         <ul class="nav-menu">
-          <!-- Home page link (active on current page) -->
           <li><a href="index.html" class="active">Home</a></li>
-          <!-- Menu page link -->
           <li><a href="menu.html">Menu</a></li>
-          <!-- About page link -->
           <li><a href="about.html">About</a></li>
-          <!-- Reservations page link -->
           <li><a href="reservations.html">Reservations</a></li>
         </ul>
       </div>
     </nav>
 
-    <!-- Hero section with background image -->
     <section class="hero" style="background-image: url('public/hero-background.jpg'); background-size: cover; background-position: center;">
-      <!-- Hero content container -->
       <div class="hero-content">
-        <!-- Main heading -->
         <h1>Welcome to PurePlates</h1>
-        <!-- Subheading/description -->
         <p>Experience the finest fresh and healthy cuisine</p>
-        <!-- Call-to-action button linking to reservations page -->
         <a href="reservations.html" class="btn-primary">Book a Table</a>
       </div>
     </section>
 
-    <!-- Features section highlighting restaurant qualities -->
     <section class="features">
-      <!-- Container for feature cards -->
       <div class="container">
-        <!-- Feature card 1: Fresh Ingredients -->
         <div class="feature-card">
-          <!-- Feature icon (emoji) -->
           <div class="feature-icon">🥗</div>
-          <!-- Feature title -->
           <h3>Fresh Ingredients</h3>
-          <!-- Feature description -->
           <p>We source locally grown, organic produce daily</p>
         </div>
-        <!-- Feature card 2: Expert Chefs -->
         <div class="feature-card">
-          <!-- Feature icon (emoji) -->
           <div class="feature-icon">👨‍🍳</div>
-          <!-- Feature title -->
           <h3>Expert Chefs</h3>
-          <!-- Feature description -->
           <p>Award-winning culinary team with passion for excellence</p>
         </div>
-        <!-- Feature card 3: Premium Quality -->
         <div class="feature-card">
-          <!-- Feature icon (emoji) -->
           <div class="feature-icon">🌟</div>
-          <!-- Feature title -->
           <h3>Premium Quality</h3>
-          <!-- Feature description -->
           <p>Every dish crafted with care and attention to detail</p>
         </div>
       </div>
     </section>
 
-    <!-- Call-to-action section encouraging user engagement -->
     <section class="cta-section">
-      <!-- Container for CTA content -->
       <div class="container">
-        <!-- CTA heading -->
         <h2>Ready to Experience Pure Taste?</h2>
-        <!-- CTA description -->
         <p>Join us for an unforgettable dining experience</p>
-        <!-- Container for action buttons -->
         <div class="cta-buttons">
-          <!-- Button linking to menu page -->
           <a href="menu.html" class="btn-secondary">View Menu</a>
-          <!-- Button linking to reservations page -->
           <a href="reservations.html" class="btn-primary">Make Reservation</a>
         </div>
       </div>
     </section>
 
 
-    <!-- Footer section with contact information and hours -->
     <footer class="footer">
-      <!-- Footer container -->
       <div class="container">
-        <!-- Footer content grid -->
         <div class="footer-content">
-          <!-- Footer section 1: Brand information -->
           <div class="footer-section">
-            <!-- Restaurant name -->
             <h4>PurePlates</h4>
-            <!-- Restaurant tagline -->
             <p>Fresh, healthy, delicious</p>
           </div>
-          <!-- Footer section 2: Operating hours -->
           <div class="footer-section">
-            <!-- Section heading -->
             <h4>Hours</h4>
-            <!-- Weekday hours -->
             <p>Mon-Fri: 11am - 10pm</p>
-            <!-- Weekend hours -->
             <p>Sat-Sun: 10am - 11pm</p>
           </div>
-          <!-- Footer section 3: Contact information -->
           <div class="footer-section">
-            <!-- Section heading -->
             <h4>Contact</h4>
-            <!-- Restaurant address -->
             <p>123 Health Street</p>
-            <!-- Restaurant phone number -->
             <p>Phone: (555) 123-4567</p>
           </div>
         </div>
       </div>
     </footer>
-    <!-- Link to main JavaScript file -->
     <script src="/main.js"></script>
-    <!-- Inline script for order form handling (if order form exists on this page) -->
+    <!-- Order form handler (if order form exists on this page) -->
     <script>
-      // Note: This script assumes an order form exists on the page
-      // Add event listener to order form submit event
       document.getElementById('orderForm').addEventListener('submit', async function(event) {
-        // Prevent default form submission behavior
         event.preventDefault();
 
-        // Collect order data from form fields
         const orderData = {
-          customer_name: document.getElementById('customerName').value,      // Get customer name
-          customer_email: document.getElementById('customerEmail').value,    // Get customer email
-          customer_phone: document.getElementById('customerPhone').value,    // Get customer phone
-          items: document.getElementById('orderItems').value,                // Get order items
-          total_price: parseFloat(document.getElementById('totalPrice').value), // Get total price as number
+          customer_name: document.getElementById('customerName').value,
+          customer_email: document.getElementById('customerEmail').value,
+          customer_phone: document.getElementById('customerPhone').value,
+          items: document.getElementById('orderItems').value,
+          total_price: parseFloat(document.getElementById('totalPrice').value),
         };
 
-        // Try to submit order to API
         try {
-          // Send POST request to orders API endpoint
           const response = await fetch('/api/orders', {
-            method: 'POST',  // HTTP POST method
-            headers: { 'Content-Type': 'application/json' },  // JSON content type header
-            body: JSON.stringify(orderData),  // Convert data to JSON string
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData),
           });
 
-          // Check if request was successful
           if (response.ok) {
-            // Reset form fields to empty
             document.getElementById('orderForm').reset();
-            // Show confirmation message
             document.getElementById('orderConfirmation').style.display = 'block';
           } else {
-            // Show error alert if request failed
             alert('Failed to place order. Please try again.');
           }
         } catch (error) {
-          // Log error to console for debugging
           console.error('Error:', error);
-          // Show error alert to user
           alert('An error occurred. Please try again.');
         }
       });

@@ -1,68 +1,61 @@
-/* CSS Custom Properties (Variables) - Define reusable color and styling values */
+/* CSS Custom Properties (Variables) */
 :root {
-  --primary-color: #2d5016;        /* Main brand color (dark green) */
-  --secondary-color: #6b8e23;      /* Secondary brand color (olive green) */
-  --accent-color: #ff6b35;         /* Accent color (orange) for highlights */
-  --text-dark: #2c3e50;            /* Dark text color */
-  --text-light: #ffffff;           /* Light text color (white) */
-  --bg-light: #f8f9fa;             /* Light background color */
-  --bg-white: #ffffff;             /* White background color */
-  --border-color: #e0e0e0;         /* Border color */
-  --shadow: 0 2px 8px rgba(0,0,0,0.1);           /* Default box shadow */
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.15);  /* Hover state box shadow */
+  --primary-color: #2d5016;
+  --secondary-color: #6b8e23;
+  --accent-color: #ff6b35;
+  --text-dark: #2c3e50;
+  --text-light: #ffffff;
+  --bg-light: #f8f9fa;
+  --bg-white: #ffffff;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.15);
 }
 
-/* Universal selector - Reset default margins and padding for all elements */
 * {
-  margin: 0;           /* Remove default margin */
-  padding: 0;          /* Remove default padding */
-  box-sizing: border-box;  /* Include padding and border in element's total width/height */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Body element styling */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;  /* Font stack for cross-platform compatibility */
-  line-height: 1.6;        /* Line spacing for readability */
-  color: var(--text-dark); /* Text color using CSS variable */
-  background-color: var(--bg-white);  /* Background color using CSS variable */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-dark);
+  background-color: var(--bg-white);
 }
 
-/* Container class - Centers content and sets max width */
 .container {
-  max-width: 1200px;  /* Maximum width of container */
-  margin: 0 auto;      /* Center container horizontally */
-  padding: 0 24px;     /* Horizontal padding for mobile responsiveness */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-/* Heading 1 styling */
 h1 {
-  font-size: 2.8em;        /* Large font size for main headings */
-  line-height: 1.2;         /* Tight line spacing */
-  margin-bottom: 16px;      /* Bottom margin for spacing */
+  font-size: 2.8em;
+  line-height: 1.2;
+  margin-bottom: 16px;
 }
 
-/* Heading 2 styling */
 h2 {
-  font-size: 2.2em;        /* Medium-large font size */
-  line-height: 1.2;         /* Tight line spacing */
-  margin-bottom: 16px;      /* Bottom margin for spacing */
-  color: var(--primary-color);  /* Use primary brand color */
+  font-size: 2.2em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--primary-color);
 }
 
-/* Heading 3 styling */
 h3 {
-  font-size: 1.4em;        /* Medium font size */
-  margin-bottom: 8px;      /* Bottom margin for spacing */
+  font-size: 1.4em;
+  margin-bottom: 8px;
 }
 
-/* Navigation bar styling */
 .navbar {
-  background-color: var(--primary-color);  /* Dark green background */
-  padding: 16px 0;          /* Vertical padding */
-  box-shadow: var(--shadow);  /* Add shadow for depth */
-  position: sticky;         /* Sticky positioning - stays at top when scrolling */
-  top: 0;                   /* Position at top of viewport */
-  z-index: 1000;            /* High z-index to stay above other content */
+  background-color: var(--primary-color);
+  padding: 16px 0;
+  box-shadow: var(--shadow);
+  position: sticky;  /* Stays at top when scrolling */
+  top: 0;
+  z-index: 1000;
 }
 
 .nav-container {
@@ -101,48 +94,43 @@ h3 {
   background-color: var(--secondary-color);
 }
 
-/* Hero section styling - main banner area */
 .hero {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);  /* Gradient background */
-  color: var(--text-light);  /* White text color */
-  padding: 120px 24px;       /* Large vertical padding, horizontal padding */
-  text-align: center;        /* Center align text */
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: var(--text-light);
+  padding: 120px 24px;
+  text-align: center;
 }
 
-/* Hero section heading styling */
 .hero-content h1 {
-  font-size: 3.5em;          /* Very large font size */
-  margin-bottom: 24px;      /* Bottom margin */
-  color: var(--text-light);  /* White text color */
+  font-size: 3.5em;
+  margin-bottom: 24px;
+  color: var(--text-light);
 }
 
-/* Hero section paragraph styling */
 .hero-content p {
-  font-size: 1.4em;         /* Large font size */
-  margin-bottom: 32px;      /* Bottom margin */
-  opacity: 0.95;            /* Slight transparency */
+  font-size: 1.4em;
+  margin-bottom: 32px;
+  opacity: 0.95;
 }
 
-/* Primary button styling - main call-to-action buttons */
 .btn-primary {
-  display: inline-block;     /* Inline block for padding/margin control */
-  background-color: var(--accent-color);  /* Orange background */
-  color: var(--text-light);  /* White text */
-  padding: 14px 32px;        /* Vertical and horizontal padding */
-  text-decoration: none;     /* Remove underline */
-  border-radius: 8px;        /* Rounded corners */
-  font-weight: 600;          /* Semi-bold font */
-  transition: all 0.3s;       /* Smooth transition for hover effects */
-  border: none;              /* Remove border */
-  cursor: pointer;           /* Pointer cursor on hover */
-  font-size: 1.1em;          /* Slightly larger font */
+  display: inline-block;
+  background-color: var(--accent-color);
+  color: var(--text-light);
+  padding: 14px 32px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1em;
 }
 
-/* Primary button hover state */
 .btn-primary:hover {
-  background-color: #e55a2b;  /* Darker orange on hover */
-  transform: translateY(-2px);  /* Slight upward movement */
-  box-shadow: var(--shadow-hover);  /* Enhanced shadow */
+  background-color: #e55a2b;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
 }
 
 .btn-secondary {
