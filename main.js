@@ -1,5 +1,3 @@
-import './style.css'
-
 document.addEventListener('DOMContentLoaded', function() {
   const navLinks = document.querySelectorAll('.nav-menu a');
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
