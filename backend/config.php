@@ -13,7 +13,8 @@ define('DB_NAME', 'resturent_db');
 // Create PDO connection with error handling
 try {
     $pdo = new PDO(
-        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+        // Include explicit port and correct charset key
+        "mysql:host=" . DB_HOST . ";port=3307;dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
         [

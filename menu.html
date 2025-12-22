@@ -90,11 +90,15 @@
             console.log('📋 Response status:', response.status);
             if (!response.ok) {
               let errorMsg = `HTTP ${response.status}`;
+              // Read response as text first (can be parsed as JSON later if needed)
+              const responseText = await response.text();
               try {
-                const err = await response.json();
+                // Try to parse as JSON
+                const err = JSON.parse(responseText);
                 errorMsg = err.error || errorMsg;
               } catch (e) {
-                errorMsg = await response.text() || errorMsg;
+                // If not JSON, use the text as error message
+                errorMsg = responseText || errorMsg;
               }
               throw new Error(errorMsg);
             }
