@@ -1,4 +1,11 @@
 <?php
+// CORS headers (allow all origins for development; restrict in production)
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Credentials: true');
+header('Content-Type: application/json');
+
 // Start session for authentication
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -30,12 +37,7 @@ try {
     exit();
 }
 
-// CORS headers (allow all origins for development; restrict in production)
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
-header('Access-Control-Allow-Credentials: true');
-header('Content-Type: application/json');
+
 
 // Handle CORS preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {

@@ -88,7 +88,7 @@
       // Load menu items from API
       function loadMenuItems() {
         console.log('📋 Loading menu items from API...');
-        fetch('/pureplates/api.php/menu-items')
+        fetch('http://localhost/PurePlates/api.php/menu-items')
           .then(async response => {
             console.log('📋 Response status:', response.status);
             if (!response.ok) {
