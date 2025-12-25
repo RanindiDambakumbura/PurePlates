@@ -16,7 +16,7 @@ if (session_status() === PHP_SESSION_NONE) {
 define('DB_HOST', 'sql103.infinityfree.com');
 define('DB_USER', 'if0_40760701');
 define('DB_PASS', 'cd4wViTHwqv');
-define('DB_NAME', 'resturent_db');
+define('DB_NAME', 'if0_40760701_resturent_db');
 
 // Create PDO connection with error handling
 try {
