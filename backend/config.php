@@ -1,5 +1,6 @@
 <?php
 // CORS headers (allow all origins for development; restrict in production)
+header("Access-Control-Allow-Origin: https://ranindidambakumbura.github.io");
 header("Access-Control-Allow-Origin: http://pureplates.ct.ws/");
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -22,7 +23,7 @@ define('DB_NAME', 'if0_40760701_resturent_db');
 try {
     $pdo = new PDO(
         // Include explicit port and correct charset key
-        "mysql:host=" . DB_HOST . ";port=3307;dbname=" . DB_NAME . ";charset=utf8mb4",
+        "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
         DB_PASS,
         [
