@@ -679,7 +679,7 @@
       // Load menu items on page load
       function loadMenuItems() {
         console.log('📋 Loading menu items...');
-        fetch('/api/menu-items')
+        fetch('https://pureplates.ct.ws/api/menu-items')
           .then(async response => {
             console.log('📋 Response status:', response.status);
             if (!response.ok) {
@@ -721,7 +721,7 @@
       // Load orders
       function loadOrders() {
         console.log('📦 Loading orders from /api/orders...');
-        fetch('/api/orders', {
+        fetch('https://pureplates.ct.ws/api/orders', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
@@ -1046,7 +1046,7 @@
 
         console.log(`🗑️ Deleting menu item #${itemToDelete}`);
 
-        fetch(`/api/menu-items/${itemToDelete}`, {
+        fetch(`https://pureplates.ct.ws/api/menu-items/${itemToDelete}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1110,7 +1110,7 @@
           return;
         }
 
-        fetch('/api/reservations-admin', {
+        fetch('https://pureplates.ct.ws/api/reservations-admin', {
           method: 'GET',
           headers: { 
             'Authorization': `Bearer ${token}`,
@@ -1223,7 +1223,7 @@
         console.log(`🔄 Updating order #${orderId} status to: ${newStatus}`);
         const token = sessionStorage.getItem('admin_token');
         
-        fetch(`/api/orders/${orderId}`, {
+        fetch(`https://pureplates.ct.ws/api/orders/${orderId}`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -1260,7 +1260,7 @@
         console.log(`🗑️ Deleting order #${orderId}`);
         const token = sessionStorage.getItem('admin_token');
         
-        fetch(`/api/orders/${orderId}`, {
+        fetch(`https://pureplates.ct.ws/api/orders/${orderId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -1382,7 +1382,7 @@
         console.log(`🗑️ Deleting reservation #${reservationId}`);
         const token = sessionStorage.getItem('admin_token');
         
-        fetch(`/api/reservations/${reservationId}`, {
+        fetch(`https://pureplates.ct.ws/api/reservations/${reservationId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -1459,7 +1459,7 @@
       // Logout
       function handleLogout() {
         const token = sessionStorage.getItem('admin_token');
-        fetch('/api/admin/logout', {
+        fetch('https://pureplates.ct.ws/api/admin/logout', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`

@@ -99,7 +99,7 @@
         };
 
         try {
-          const response = await fetch('/api/orders', {
+          const response = await fetch('https://pureplates.ct.ws/api/orders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData),

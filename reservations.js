@@ -21,7 +21,7 @@ form.addEventListener('submit', function(e) {
 
   console.log('📤 Sending reservation to backend:', formData);
 
-  fetch('/api/reservations', {
+  fetch('https://pureplates.ct.ws/api/reservations', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
