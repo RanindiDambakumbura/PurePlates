@@ -12,9 +12,9 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Database configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASS', 'root@SQL4');
+define('DB_HOST', 'sql103.infinityfree.com');
+define('DB_USER', 'if0_40760701');
+define('DB_PASS', 'cd4wViTHwqv');
 define('DB_NAME', 'resturent_db');
 
 // Create PDO connection with error handling
